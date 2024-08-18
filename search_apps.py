@@ -38,6 +38,7 @@ QUERIES_TEMPLATE = [
 RESULTS_PER_PAGE = 10
 MAX_RESULTS = 100
 OUTPUT_FILE = 'bundleIds.txt'
+TOTAL_RESULTS = 0
 
 # Load API keys from a file
 def load_api_keys(file_path):
@@ -131,11 +132,9 @@ def main():
     API_KEYS = load_api_keys('api_keys.txt')
     current_date_short = datetime.strptime(START_DATE_SHORT, "%d %b %Y")
     current_date_full = datetime.strptime(START_DATE_FULL, "%d %B %Y")
-    total_results = 0
     api_key_index = 0
-    stop_execution = False
-
-    while not stop_execution:
+    global TOTAL_RESULTS
+    while True:  # Infinite loop, will break when execution stops
         for date_format in DATE_FORMATS:
             if date_format == "%d %b %Y":
                 current_date = current_date_short
@@ -153,23 +152,19 @@ def main():
                     
                     retry = True
                     while retry:
+                        if api_key_index >= len(API_KEYS):  # Check before accessing API_KEYS
+                            logging.error("All API keys have been exhausted. Stopping execution.")
+                            print("[ERROR] All API keys have been exhausted. Stopping execution.")
+                            return  # Stop the script entirely
+
                         result = process_query(query, API_KEYS[api_key_index])
                         
                         if result == "RATE_LIMIT":
                             api_key_index += 1
-                            if api_key_index >= len(API_KEYS):
-                                logging.error("All API keys have exceeded their rate limits or are forbidden. Stopping execution.")
-                                print("[ERROR] All API keys have exceeded their rate limits or are forbidden. Stopping execution.")
-                                stop_execution = True
-                                retry = False
-                                break  # Exit both the inner loops
                             logging.info(f"Switching to API key index: {api_key_index}")
                             print(f"[INFO] Switching to API key index: {api_key_index}")
                         else:
                             retry = False  # Exit the retry loop only if no rate limit error
-
-                    if stop_execution:
-                        break  # Break the outer loop if stopping
 
                     # Ensure result is a valid number before adding
                     if isinstance(result, int) and result > 0:
@@ -178,28 +173,19 @@ def main():
                         logging.warning(f"Query returned no valid results for {formatted_date}.")
                         print(f"[WARN] Query returned no valid results for {formatted_date}.")
 
-            if stop_execution:
-                break  # Break the date_format loop if stopping
-
-            total_results += date_total_results
+            TOTAL_RESULTS += date_total_results
             print(f"[INFO] Total results for {formatted_date}: {date_total_results}")
-            # Can add break point here to start
+
             # Update the current date based on the format
-            # For example: 
-            # stop_execution = True
-            # break
-            # etc
             if date_format == "%d %b %Y":
                 current_date_short -= timedelta(days=1)
             else:
                 current_date_full -= timedelta(days=1)
 
-        if stop_execution:
-            break  # Exit the while loop if stopping
 
-    logging.info(f"Total results fetched for all queries: {total_results}")
-    print(f"[INFO] Total results fetched for all queries: {total_results}")
 
 
 if __name__ == "__main__":
     main()
+    logging.info(f"Total results fetched for all queries: {TOTAL_RESULTS}")
+    print(f"[INFO] Total results fetched for all queries: {TOTAL_RESULTS}")
