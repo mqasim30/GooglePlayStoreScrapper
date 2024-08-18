@@ -1,1 +1,5 @@
 node_modules/
+bundleIds.txt
+keywords.txt
+unique_bundleIds.txt
+api_keys.txt
