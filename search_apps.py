@@ -13,10 +13,11 @@ logging.basicConfig(
 )
 
 CX = 'c5f7cde4c5c08421d'
-START_DATE_SHORT = "21 Jul 2024"  # Starting from the latest date in short form
+START_DATE_SHORT = "17 Jun 2024"  # Starting from the latest date in short form
 START_DATE_FULL = "22 July 2024"  # Starting from the latest date in full form
 DATE_FORMATS = ["%d %b %Y", "%d %B %Y"]  # Short and long formats
-CONDITIONS = ["game", "-game"]  # Game condition variations
+CONDITIONS = ["game"]
+              #, "-game"]  # Game condition variations
 
 QUERIES_TEMPLATE = [
     'site:https://play.google.com/store/apps/details "{DATE}" "0+"',
@@ -120,7 +121,7 @@ def process_query(query, api_key):
                 print("[WARN] No results returned or an error occurred.")
                 break
 
-            time.sleep(1)  # Adding delay to avoid hitting rate limits
+            time.sleep(0.5)  # Adding delay to avoid hitting rate limits
 
     logging.info(f"Total results fetched for query '{query}': {len(all_results)}")
     logging.info(f"Bundle IDs have been appended to {OUTPUT_FILE}")

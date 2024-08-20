@@ -247,7 +247,7 @@ async function processDevelopers(developerNames) {
 async function processBundleIdsFromFile(
   filePath,
   concurrency = os.cpus().length,
-  bundleIdDelay = 500
+  bundleIdDelay = 0
 ) {
   try {
     const data = fs.readFileSync(filePath, "utf8");
@@ -323,7 +323,7 @@ async function processKeyword(keyword) {
 async function processKeywordsFromFile(
   filePath,
   concurrency = os.cpus().length,
-  keywordDelay = 500
+  keywordDelay = 0
 ) {
   try {
     const data = fs.readFileSync(filePath, "utf8");
@@ -364,7 +364,7 @@ async function processKeywordsFromFile(
 async function processDevelopersFromFile(
   filePath,
   concurrency = os.cpus().length,
-  developerDelay = 500
+  developerDelay = 0
 ) {
   try {
     const data = fs.readFileSync(filePath, "utf8");
