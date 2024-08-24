@@ -128,6 +128,13 @@ def process_query(query, api_key):
     print("[INFO] Query processing completed.")
     return len(all_results)
 
+def remove_duplicates():
+    with open('bundleIds.txt', 'r') as file:
+        bundle_ids = file.readlines()
+    unique_bundle_ids = set(bundle_ids)
+    with open('bundleIds.txt', 'w') as file:
+        file.writelines(unique_bundle_ids)
+
 def main():
     API_KEYS = load_api_keys('api_keys.txt')
     current_date_short = datetime.strptime(START_DATE_SHORT, "%d %b %Y")
@@ -189,3 +196,4 @@ if __name__ == "__main__":
     main()
     logging.info(f"Total results fetched for all queries: {TOTAL_RESULTS}")
     print(f"[INFO] Total results fetched for all queries: {TOTAL_RESULTS}")
+    remove_duplicates()
