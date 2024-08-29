@@ -7,6 +7,7 @@ import os from "os";
 import yargs from "yargs";
 import chalk from "chalk";
 import { hideBin } from "yargs/helpers";
+import { exec } from "child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +40,22 @@ const logger = winston.createLogger({
     }),
   ],
 });
+
+function runBatchZipClean() {
+  exec('./batch_zip_clean.sh', (error, stdout, stderr) => {
+      if (error) {
+          console.error(chalk.red(`Error executing script: ${error.message}`));
+          return;
+      }
+
+      if (stderr) {
+          console.error(chalk.red(`Error output: ${stderr}`));
+          return;
+      }
+
+      console.log(chalk.green(`Script output: ${stdout}`));
+  });
+}
 
 // Function to clean up the app result by removing unnecessary fields
 function cleanAppResult(result) {
@@ -279,6 +296,8 @@ async function processBundleIdsFromFile(
     }
 
     logger.info(`Completed processing all bundle IDs.`);
+    runBatchZipClean();
+
   } catch (error) {
     logger.error(`Error processing bundle IDs from file: ${error.message}`);
   }

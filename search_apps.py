@@ -2,6 +2,7 @@ import requests
 import time
 import logging
 from datetime import datetime, timedelta
+import subprocess
 
 # Configure logging
 logging.basicConfig(
@@ -13,8 +14,8 @@ logging.basicConfig(
 )
 
 CX = 'c5f7cde4c5c08421d'
-START_DATE_SHORT = "12 Mar 2024"  # Starting from the latest date in short form
-START_DATE_FULL = "13 March 2024"  # Starting from the latest date in full form
+START_DATE_SHORT = "7 Aug 2023"  # Starting from the latest date in short form
+START_DATE_FULL = "7 August 2023"  # Starting from the latest date in full form
 DATE_FORMATS = ["%d %b %Y","%d %B %Y"]  # Short and long formats
 CONDITIONS = ["game", "-game"]  # Game condition variations
 QUERIES_TEMPLATE = [
@@ -134,6 +135,21 @@ def remove_duplicates():
     unique_bundle_ids = set(bundle_ids)
     with open('bundleIds.txt', 'w') as file:
         file.writelines(unique_bundle_ids)
+    logging.info(f"[INFO] Duplicates removed. New results counts: {len(unique_bundle_ids)}")
+    print(f"[INFO] Duplicates removed. New results counts: {len(unique_bundle_ids)}")
+
+def clear_output_file():
+    with open(OUTPUT_FILE, 'w') as file:
+        pass  # This will clear the file contents
+
+def run_node_script():
+    try:
+        subprocess.run(["node", "appSearchGP.js", "--bundleIds"], check=True)
+        logging.info("Node script executed successfully.")
+        print("[INFO] Node script executed successfully.")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Node script failed with error: {e}")
+        print(f"[ERROR] Node script failed with error: {e}")
 
 def main():
     API_KEYS = load_api_keys('api_keys.txt')
@@ -193,7 +209,9 @@ def main():
 
 
 if __name__ == "__main__":
+    clear_output_file()
     main()
     logging.info(f"Total results fetched for all queries: {TOTAL_RESULTS}")
     print(f"[INFO] Total results fetched for all queries: {TOTAL_RESULTS}")
     remove_duplicates()
+    run_node_script()

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Step 1: Move all files from data folder to split_data and divide into subfolders
+# Step 1: Move all files from the apps folder to data_split and divide into subfolders
 
-# Source directory containing the text files
+# Source directory containing the files
 src_dir="apps"
 
 # Destination base directory
@@ -11,7 +11,7 @@ dest_base_dir="data_split"
 # Number of files per folder
 files_per_folder=10000
 
-# Create the destination base directory
+# Create the destination base directory if it doesn't exist
 mkdir -p "$dest_base_dir"
 
 # Initialize folder counter
@@ -20,12 +20,12 @@ folder_counter=1
 # Initialize file counter
 file_counter=0
 
-# Loop through all text files in the source directory
+# Loop through all files in the source directory
 for file in "$src_dir"/*; do
-    # Calculate current destination folder
+    # Calculate the current destination folder
     dest_folder="$dest_base_dir/folder_$folder_counter"
 
-    # Create destination folder if it doesn't exist
+    # Create the destination folder if it doesn't exist
     mkdir -p "$dest_folder"
 
     # Move the file to the destination folder
@@ -36,7 +36,7 @@ for file in "$src_dir"/*; do
 
     # Check if we've reached the limit for the current folder
     if [ "$file_counter" -ge "$files_per_folder" ]; then
-        # Reset file counter and increment folder counter
+        # Reset the file counter and increment the folder counter
         file_counter=0
         folder_counter=$((folder_counter + 1))
     fi
@@ -50,7 +50,7 @@ wait
 # Step 2: Compress each folder into its own .zip file
 
 # Navigate to the destination base directory
-cd "$dest_base_dir" || exit
+cd "$dest_base_dir" || exit 1
 
 # Compress each folder into its own .zip file
 for folder in */; do
