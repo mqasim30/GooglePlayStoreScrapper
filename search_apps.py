@@ -14,8 +14,8 @@ logging.basicConfig(
 )
 
 CX = 'c5f7cde4c5c08421d'
-START_DATE_SHORT = "7 Aug 2023"  # Starting from the latest date in short form
-START_DATE_FULL = "7 August 2023"  # Starting from the latest date in full form
+START_DATE_SHORT = "30 Apr 2023"  # Starting from the latest date in short form
+START_DATE_FULL = "30 April 2023"  # Starting from the latest date in full form
 DATE_FORMATS = ["%d %b %Y","%d %B %Y"]  # Short and long formats
 CONDITIONS = ["game", "-game"]  # Game condition variations
 QUERIES_TEMPLATE = [
