@@ -14,10 +14,16 @@ logging.basicConfig(
 )
 
 CX = 'c5f7cde4c5c08421d'
-START_DATE_SHORT = "30 Apr 2023"  # Starting from the latest date in short form
-START_DATE_FULL = "30 April 2023"  # Starting from the latest date in full form
+
+START_DATE_SHORT = "21 Feb 2023"  # Starting from the latest date in short form
+START_DATE_FULL = "2 March 2023"  # Starting from the latest date in full form
+
+END_DATE_SHORT = ""  # End date in short form
+END_DATE_FULL = ""  # End date in full form
+
 DATE_FORMATS = ["%d %b %Y","%d %B %Y"]  # Short and long formats
 CONDITIONS = ["game", "-game"]  # Game condition variations
+
 QUERIES_TEMPLATE = [
     'site:https://play.google.com/store/apps/details "{DATE}" "0+"',
     'site:https://play.google.com/store/apps/details "{DATE}" "1+"',
@@ -155,24 +161,35 @@ def main():
     API_KEYS = load_api_keys('api_keys.txt')
     current_date_short = datetime.strptime(START_DATE_SHORT, "%d %b %Y")
     current_date_full = datetime.strptime(START_DATE_FULL, "%d %B %Y")
+    end_date_short = datetime.strptime(END_DATE_SHORT, "%d %b %Y") if END_DATE_SHORT else None
+    end_date_full = datetime.strptime(END_DATE_FULL, "%d %B %Y") if END_DATE_FULL else None
     api_key_index = 0
     global TOTAL_RESULTS
+
     while True:  # Infinite loop, will break when execution stops
         for date_format in DATE_FORMATS:
             if date_format == "%d %b %Y":
                 current_date = current_date_short
+                end_date = end_date_short
             else:
                 current_date = current_date_full
-            
+                end_date = end_date_full
+
+            # Check if the end date is reached
+            if end_date and current_date < end_date:
+                logging.info(f"Reached end date {end_date.strftime(date_format)} for format {date_format}.")
+                print(f"[INFO] Reached end date {end_date.strftime(date_format)} for format {date_format}.")
+                continue
+
             date_total_results = 0
             formatted_date = current_date.strftime(date_format)
             logging.info(f"Processing date: {formatted_date}")
             print(f"[INFO] Processing date: {formatted_date}")
-            
+
             for query_template in QUERIES_TEMPLATE:
                 for condition in CONDITIONS:
                     query = query_template.replace("{DATE}", formatted_date) + f' "{condition}"'
-                    
+
                     retry = True
                     while retry:
                         if api_key_index >= len(API_KEYS):  # Check before accessing API_KEYS
@@ -181,7 +198,7 @@ def main():
                             return  # Stop the script entirely
 
                         result = process_query(query, API_KEYS[api_key_index])
-                        
+
                         if result == "RATE_LIMIT":
                             api_key_index += 1
                             logging.info(f"Switching to API key index: {api_key_index}")

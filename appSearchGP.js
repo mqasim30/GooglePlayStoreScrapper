@@ -42,18 +42,18 @@ const logger = winston.createLogger({
 });
 
 function runBatchZipClean() {
-  exec('./batch_zip_clean.sh', (error, stdout, stderr) => {
-      if (error) {
-          console.error(chalk.red(`Error executing script: ${error.message}`));
-          return;
-      }
+  exec('./batch_zip_clean.sh', { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => { // Increase buffer to 10MB
+    if (error) {
+      console.error(chalk.red(`Error executing script: ${error.message}`));
+      return;
+    }
 
-      if (stderr) {
-          console.error(chalk.red(`Error output: ${stderr}`));
-          return;
-      }
+    if (stderr) {
+      console.error(chalk.red(`Error output: ${stderr}`));
+      return;
+    }
 
-      console.log(chalk.green(`Script output: ${stdout}`));
+    console.log(chalk.green(`Script output: ${stdout}`));
   });
 }
 
