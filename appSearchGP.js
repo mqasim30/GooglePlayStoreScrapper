@@ -222,7 +222,17 @@ async function processBundleId(appId) {
   } catch (error) {
     logger.error(`Error processing appId: ${appId}`, error);
   }
+  
   logger.debug(`Finished processing for appId: ${appId}`);
+
+  try {
+    const filePath = path.join(__dirname, 'finishedAppIds.txt');
+    ensureFileExists(filePath)
+    await fs.appendFileSync(filePath, `${appId}\n`);
+    logger.debug(`Saved appId: ${appId} to finishedAppIds.txt`);
+  } catch (fileError) {
+    logger.error(`Failed to save appId: ${appId} to finishedAppIds.txt`, fileError);
+  }
 }
 
 // Function to process developer data

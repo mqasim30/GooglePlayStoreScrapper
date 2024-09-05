@@ -15,11 +15,11 @@ logging.basicConfig(
 
 CX = 'c5f7cde4c5c08421d'
 
-START_DATE_SHORT = "21 Feb 2023"  # Starting from the latest date in short form
-START_DATE_FULL = "2 March 2023"  # Starting from the latest date in full form
+START_DATE_SHORT = "31 Dec 2022"  # Starting from the latest date in short form
+START_DATE_FULL = "31 December 2022"  # Starting from the latest date in full form
 
-END_DATE_SHORT = ""  # End date in short form
-END_DATE_FULL = ""  # End date in full form
+END_DATE_SHORT = "1 Jan 2023"  # End date in short form
+END_DATE_FULL = "1 January 2023"  # End date in full form
 
 DATE_FORMATS = ["%d %b %Y","%d %B %Y"]  # Short and long formats
 CONDITIONS = ["game", "-game"]  # Game condition variations
