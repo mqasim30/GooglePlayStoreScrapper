@@ -20,6 +20,8 @@ folder_counter=1
 # Initialize file counter
 file_counter=0
 
+echo "Starting shell process:"
+
 # Loop through all files in the source directory
 for file in "$src_dir"/*; do
     # Calculate the current destination folder
@@ -69,4 +71,4 @@ for ITEM in "$PWD"/*; do
     fi
 done
 
-echo "All folders deleted, only zip files remain."
+#echo "All folders deleted, only zip files remain."
