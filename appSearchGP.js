@@ -42,7 +42,7 @@ const logger = winston.createLogger({
 });
 
 function runBatchZipClean() {
-  exec('python generate_csv.py', { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => { // Increase buffer to 10MB
+  exec('python3 generate_csv.py', { maxBuffer: 1024 * 1024 * 100 }, (error, stdout, stderr) => { // Increase buffer to 10MB
     if (error) {
       console.error(chalk.red(`Error executing script: ${error.message}`));
       return;

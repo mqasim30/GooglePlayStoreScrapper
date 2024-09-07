@@ -10,7 +10,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Create a file handler for logging to a file
-file_handler = logging.FileHandler('script.log', mode='a')
+file_handler = logging.FileHandler('csv.log', mode='a')
 file_handler.setLevel(logging.INFO)
 
 # Create a console handler for logging to the console
@@ -35,7 +35,7 @@ def process_file(file_path):
         with open(file_path, 'r') as f:
             data = json.load(f)
         logger.info(f"Successfully processed file: {file_path}")
-        return {"email": data.get("developerEmail")}
+        return {"Email": data.get("developerEmail")}
     except json.JSONDecodeError as e:
         logger.error(f"Failed to decode JSON in file {file_path}: {e}")
         return None
@@ -78,11 +78,11 @@ def main():
             # Process each file in parallel
             results = executor.map(process_file, all_txt_files)
             for result in results:
-                if result and result["email"]:
-                    unique_emails.add(result["email"])  # Add to the set for uniqueness
+                if result and result["Email"]:
+                    unique_emails.add(result["Email"])  # Add to the set for uniqueness
         
         # Convert the unique emails set to a list of dictionaries for pandas
-        rows = [{"email": email} for email in unique_emails]
+        rows = [{"Email": email} for email in unique_emails]
         
         # Convert to a DataFrame and save to CSV
         logger.info(f"Writing {len(rows)} unique results to CSV")
