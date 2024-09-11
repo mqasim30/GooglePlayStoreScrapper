@@ -15,13 +15,12 @@ logging.basicConfig(
 
 CX = 'c5f7cde4c5c08421d'
 
-START_DATE_SHORT = "11 Jul 2022"  # Starting from the latest date in short form
-START_DATE_FULL = "11 July 2022"  # Starting from the latest date in full form
+START_DATE_SHORT = "12 Feb 2022"  # Starting from the latest date in short form
+START_DATE_FULL = "12 February 2022"  # Starting from the latest date in full form
 
-END_DATE_SHORT = "1 Jun 2022"  # End date in short form
-END_DATE_FULL = "1 June 2022 "  # End date in full form
-
-DATE_FORMATS = ["%d %b %Y","%d %B %Y"]  # Short and long formats
+END_DATE_SHORT = "1 Jan 2022"  # End date in short form
+END_DATE_FULL = "1 January 2022"  # End date in full form
+DATE_FORMATS = ["%d %b %Y","%d %B %Y"]
 CONDITIONS = ["game", "-game"]  # Game condition variations
 
 QUERIES_TEMPLATE = [
@@ -179,7 +178,7 @@ def main():
             if end_date and current_date < end_date:
                 logging.info(f"Reached end date {end_date.strftime(date_format)} for format {date_format}.")
                 print(f"[INFO] Reached end date {end_date.strftime(date_format)} for format {date_format}.")
-                continue
+                return
 
             date_total_results = 0
             formatted_date = current_date.strftime(date_format)
@@ -226,7 +225,7 @@ def main():
 
 
 if __name__ == "__main__":
-    clear_output_file()
+    #clear_output_file()
     main()
     logging.info(f"Total results fetched for all queries: {TOTAL_RESULTS}")
     print(f"[INFO] Total results fetched for all queries: {TOTAL_RESULTS}")
