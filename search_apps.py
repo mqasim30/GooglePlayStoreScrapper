@@ -15,11 +15,12 @@ logging.basicConfig(
 
 CX = 'c5f7cde4c5c08421d'
 
-START_DATE_SHORT = "12 Feb 2022"  # Starting from the latest date in short form
-START_DATE_FULL = "12 February 2022"  # Starting from the latest date in full form
+START_DATE_SHORT = "10 Sep 2024"  # Starting from the latest date in short form
+START_DATE_FULL = "10 September 2024"  # Starting from the latest date in full form
 
-END_DATE_SHORT = "1 Jan 2022"  # End date in short form
-END_DATE_FULL = "1 January 2022"  # End date in full form
+END_DATE_SHORT = "1 Sep 2024"  # End date in short form
+END_DATE_FULL = "1 September 2024"  # End date in full form
+
 DATE_FORMATS = ["%d %b %Y","%d %B %Y"]
 CONDITIONS = ["game", "-game"]  # Game condition variations
 
@@ -225,7 +226,7 @@ def main():
 
 
 if __name__ == "__main__":
-    #clear_output_file()
+    clear_output_file()
     main()
     logging.info(f"Total results fetched for all queries: {TOTAL_RESULTS}")
     print(f"[INFO] Total results fetched for all queries: {TOTAL_RESULTS}")
